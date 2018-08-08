@@ -14,6 +14,30 @@
 	<link rel="stylesheet" type="text/css" href="css/login_util.css">
 	<link rel="stylesheet" type="text/css" href="css/login_main.css">
 	<!--===============================================================================================-->
+
+	<style type="text/css">
+	.error {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #a94442; 
+		color: #a94442; 
+		background: #f2dede; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+	.info {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #58a841; 
+		color: #58a841; 
+		background: #def1de; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+</style>
+
 </head>
 
 <body>

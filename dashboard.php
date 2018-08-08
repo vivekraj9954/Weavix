@@ -28,6 +28,30 @@
 	<link href="assets/css/custom.css" rel="stylesheet" />
 	<!-- GOOGLE FONTS-->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+	<style type="text/css">
+	.error {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #a94442; 
+		color: #a94442; 
+		background: #f2dede; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+	.info {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #58a841; 
+		color: #58a841; 
+		background: #def1de; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+</style>
+
 </head>
 <body>
 

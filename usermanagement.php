@@ -1,25 +1,25 @@
-﻿<?php include('server.php'); ?>
+<?php include('server.php'); ?>
 
 <?php 
-	session_start(); 
+session_start(); 
 
-	if (!isset($_SESSION['username'])) {
-		$_SESSION['msg'] = "You must log in first";
-		header('location: login.php');
-	}
+if (!isset($_SESSION['username'])) {
+	$_SESSION['msg'] = "You must log in first";
+	header('location: login.php');
+}
 
-	if (isset($_GET['logout'])) {
-		session_destroy();
-		unset($_SESSION['username']);
-		header("location: login.php");
-	}
+if (isset($_GET['logout'])) {
+	session_destroy();
+	unset($_SESSION['username']);
+	header("location: login.php");
+}
 
 ?>
 
 
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,9 +38,33 @@
 		width: 150px;
 		border: solid 1px black;
 	}
+
+	.error {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #a94442; 
+		color: #a94442; 
+		background: #f2dede; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+
+	.info {
+		width: 100%; 
+		margin: 0px auto; 
+		padding: 10px; 
+		border: 1px solid #58a841; 
+		color: #58a841; 
+		background: #def1de; 
+		border-radius: 5px; 
+		text-align: left;
+	}
+
 </style>
 
 <script type="text/javascript">
+
 	function addEmpFormValidation() {
 		var firstname = document.forms["addempform"]["empFirstName"];
 		var lastname = document.forms["addempform"]["empLastName"];
@@ -143,6 +167,15 @@
 		}
 
 	}
+
+	var getQueryString = function ( field, url ) {
+		var href = url ? url : window.location.href;
+		var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+		var string = reg.exec(href);
+		return string ? string[1] : null;
+	};
+
+	
 </script>
 
 </head>
@@ -150,7 +183,7 @@
 
 
 
-	<div id="wrapper">
+	<div>
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="adjust-nav">
 				<div class="navbar-header">
@@ -201,14 +234,14 @@
 				<div style="padding: 20px;">
 					
 					<ul class="nav nav-tabs">
-						<li class="active"><a data-toggle="tab" href="#emplist">Employees</a></li>
-						<li><a data-toggle="tab" href="#menu1">Add Employee</a></li>
+						<li class="active" id="li1"><a data-toggle="tab" href="#emplist">Employees</a></li>
+						<li id="li2"><a data-toggle="tab" href="#addemp">Add Employee</a></li>
 					</ul>
 
 					<div class="tab-content">
 
 
-						<div id="emplist" class="tab-pane fade in">
+						<div id="emplist" class="tab-pane fade in active">
 							<h3>Employee List</h3>
 							<hr>
 
@@ -216,11 +249,21 @@
 
 
 
-						<div id="menu1" class="tab-pane fade active">
-							<form name="addempform" method="post" onsubmit="return addEmpFormValidation()" action="usermanagement.php" >
+						<div id="addemp" class="tab-pane fade">
+							<form name="addempform" method="post" onsubmit="return addEmpFormValidation()" action="usermanagement.php?tab=2" >
 
 								<h3>Add Employee</h3>
 								<hr>
+
+								<?php if(count($info) > 0) : ?>
+									<div class="info">
+										<?php foreach ($info as $i) : ?>
+											<p><?php echo $i ?></p>
+										<?php endforeach ?>
+									</div>
+									<hr>
+								<?php endif ?>
+
 								<h4>Personal Details</h4>
 								<hr align="left" class="custom-hr">
 
@@ -296,6 +339,8 @@
 									</div>
 
 								</div>
+
+								<br>
 
 								<div class="row">
 									<div class="col-md-12">
@@ -390,9 +435,9 @@
 											<div class="col-md-12">
 												<div class="input-group mb-3">
 													<select class="custom-select form-control" id="designation">
-														<option selected>------Select------</option>
-														<option value="1">01 Floor Manager</option>
-														<option value="2">02 Loom Worker</option>
+														<option selected value="">------Select------</option>
+														<option value="Floor Manager">01 Floor Manager</option>
+														<option value="Loom Worker">02 Loom Worker</option>
 													</select>
 												</div>
 											</div>
@@ -411,9 +456,9 @@
 											<div class="col-md-12">
 												<div class="input-group mb-3">
 													<select class="custom-select form-control" id="shift">
-														<option selected>------Select------</option>
-														<option value="1">01 Day</option>
-														<option value="2">02 Night</option>
+														<option selected value="">------Select------</option>
+														<option value="Day">01 Day</option>
+														<option value="Night">02 Night</option>
 													</select>
 												</div>
 											</div>
@@ -431,9 +476,9 @@
 											<div class="col-md-12">
 												<div class="input-group mb-3">
 													<select class="custom-select form-control" id="jobStatus">
-														<option selected>------Select------</option>
-														<option value="1">01 Working</option>
-														<option value="2">02 Not Working</option>
+														<option selected value="">------Select------</option>
+														<option value="Working">01 Working</option>
+														<option value="Not Working">02 Not Working</option>
 													</select>
 												</div>
 											</div>
@@ -513,6 +558,23 @@
 	<!-- CUSTOM SCRIPTS -->
 	<script src="assets/js/custom.js"></script>
 
+<script type="text/javascript">
+	var getQueryString = function ( field, url ) {
+		var href = url ? url : window.location.href;
+		var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+		var string = reg.exec(href);
+		return string ? string[1] : null;
+	};
+
+	var tab = getQueryString('tab');
+
+	if (tab == '2') {
+		document.getElementById("li1").classList.remove('active');
+		document.getElementById("emplist").classList.remove('active');
+		document.getElementById("li2").classList.add('active');
+		document.getElementById("addemp").classList.add('active');
+	}
+</script>
 
 </body>
 </html>
