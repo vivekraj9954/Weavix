@@ -4,7 +4,6 @@
 session_start(); 
 
 if (!isset($_SESSION['username'])) {
-	$_SESSION['msg'] = "You must log in first";
 	header('location: login.php');
 }
 
@@ -12,6 +11,18 @@ if (isset($_GET['logout'])) {
 	session_destroy();
 	unset($_SESSION['username']);
 	header("location: login.php");
+}
+
+if (isset($_GET['edit'])) {
+	
+	$id = $_GET['edit'];
+
+	$getEmpInfoToEdit = "select * from emp_info where Emp_Id='$id';";
+
+	$resultsToEdit = mysqli_query($db, $getEmpInfoToEdit);
+
+	$row1 = mysqli_fetch_array($resultsToEdit);
+
 }
 
 ?>
@@ -183,7 +194,7 @@ if (isset($_GET['logout'])) {
 
 
 
-	<div>
+	<div id="wrapper">
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="adjust-nav">
 				<div class="navbar-header">
@@ -192,7 +203,7 @@ if (isset($_GET['logout'])) {
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand" href="index.html">
 						<img src="assets/img/logo.png" style="height: 50px;" />
 
 					</a>
@@ -235,7 +246,7 @@ if (isset($_GET['logout'])) {
 					
 					<ul class="nav nav-tabs">
 						<li class="active" id="li1"><a data-toggle="tab" href="#emplist">Employees</a></li>
-						<li id="li2"><a data-toggle="tab" href="#addemp">Add Employee</a></li>
+						<li id="li2" class=""><a data-toggle="tab" href="#addemp">Add Employee</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -245,11 +256,51 @@ if (isset($_GET['logout'])) {
 							<h3>Employee List</h3>
 							<hr>
 
+							<?php if(count($errors2) >0) : ?>
+							<div class="error">
+								<?php foreach($errors2 as $error) : ?>
+									<strong><p><?php echo $error; ?></p></strong>
+								<?php endforeach ?>
+							</div>
+						<?php endif ?>
+
+						<?php if(count($info2) > 0) : ?>
+							<div class="info">
+								<?php foreach($info2 as $i) : ?>
+									<strong><p><?php echo $i; ?></p></strong>
+								<?php endforeach ?>
+							</div>
+						<?php endif ?>
+
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Designation</th>
+										<th>Shift</th>
+										<th>Mobile</th>
+										<th>Status</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$getempquery = "Select * from emp_info;";
+
+									if ($results = mysqli_query($db, $getempquery)) {
+										while ($row = mysqli_fetch_assoc($results)) {
+											echo '<tr><td>'.$row['First_Name'].' '.$row['Last_Name'].'</td><td>'.$row['Designation'].'</td><td>'.$row['Shift'].'</td><td>'.$row['Mobile_Work'].'</td><td>'.$row['Status'].'</td><td><a href="usermanagement.php?tab=2&edit='.$row['Emp_Id'].'">Edit</a> | <a href="usermanagement.php?delete='.$row['Emp_Id'].'">Delete</a></td></tr>';
+										}
+									}
+									?>
+								</tbody>
+							</table>
+
 						</div>
 
 
 
-						<div id="addemp" class="tab-pane fade">
+						<div id="addemp" class="tab-pane fade in">
 							<form name="addempform" method="post" onsubmit="return addEmpFormValidation()" action="usermanagement.php?tab=2" >
 
 								<h3>Add Employee</h3>
@@ -258,323 +309,470 @@ if (isset($_GET['logout'])) {
 								<?php if(count($info) > 0) : ?>
 									<div class="info">
 										<?php foreach ($info as $i) : ?>
-											<p><?php echo $i ?></p>
-										<?php endforeach ?>
-									</div>
-									<hr>
-								<?php endif ?>
+											<strong><p><?php echo $i ?></p><strong>
+											<?php endforeach ?>
+										</div>
+										<hr>
+									<?php endif ?>
 
-								<h4>Personal Details</h4>
-								<hr align="left" class="custom-hr">
+									<?php if(count($errors) > 0) : ?>
+										<div class="error">
+											<?php foreach ($errors as $i) : ?>
+												<strong><p><?php echo $i ?></p><strong>
+												<?php endforeach ?>
+											</div>
+											<hr>
+										<?php endif ?>
 
-								<div class="row">
-									<div class="col-md-12">
-										<span>Employee Id :</span>
-									</div>
-								</div>
+										<h4>Personal Details</h4>
+										<hr align="left" class="custom-hr">
 
-								<div class="row">
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="empId" placeholder="105" disabled="true">
-									</div>
-								</div>
-
-								<br>
-
-								<div class="row">
-									<div class="col-md-12">
-										<span>Employee Name :</span>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="empFirstName" placeholder="First Name">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="empMiddleName" placeholder="Middle Name">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="empLastName" placeholder="Last Name">
-									</div>
-								</div>
-
-								<br>
-
-								<div class="row">
-
-									<div class="col-md-3">
 										<div class="row">
 											<div class="col-md-12">
-												<span>Date Of Birth :</span>
+												<span>Employee Id :</span>
 											</div>
 										</div>
 
 										<div class="row">
-											<div class="col-md-12">
-												<input type="date" class="form-control" name="dOB">
-											</div>
-										</div>
-									</div>
-
-
-									<div class="col-md-6">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Gender :</span>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-6">
-												<div class="input-group mb-3">
-													<select class="custom-select form-control" name="gender">
-														<option selected>------Select------</option>
-														<option value="male">Male</option>
-														<option value="female">Female</option>
-													</select>
+											<div class="col-md-3">
+												<input type="text" class="form-control" name="empId"
+												<?php if ($row1 != null) : ?>
+													value="<?php echo $row1['Emp_Id'];?>"
+													<?php else : ?>
+														placeholder="Employee Id"
+													<?php endif ?>
+													readonly>
 												</div>
 											</div>
-										</div>
-									</div>
 
-								</div>
+											<br>
 
-								<br>
-
-								<div class="row">
-									<div class="col-md-12">
-										<span>Father's Name :</span>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-md-4">
-										<input type="text" class="form-control" name="fatherName" placeholder="Fathers Name">
-									</div>
-								</div>
-
-								<br>
-
-								<div class="row">
-									<div class="col-md-12">
-										<span>Address :</span>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="street" placeholder="Street">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="city" placeholder="City">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="state" placeholder="State">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="pin" placeholder="Pin Code">
-									</div>
-								</div>
-
-								<br>
-
-								<div class="row">
-
-									<div class="col-md-4">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Email Id :</span>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-12">
-												<input type="text" class="form-control" name="emailId" placeholder="employeename@example.com">
-											</div>
-										</div>
-									</div>
-
-
-									<div class="col-md-6">
-										<div class="row">
-											<div class="col-md-6">
-												<span>Mobile No. :</span>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-6">
-												<input type="mobile" class="form-control" name="mobileHome" placeholder="Home" >
-											</div>
-											<div class="col-md-6">
-												<input type="mobile" class="form-control" name="mobileWork" placeholder="Work" >
-											</div>
-										</div>
-									</div>
-
-								</div>
-
-
-
-
-								<hr>
-								<h4>Job Details</h4>
-								<hr align="left" class="custom-hr">
-
-								<div class="row">
-
-									<div class="col-md-4">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Designation :</span>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-12">
-												<div class="input-group mb-3">
-													<select class="custom-select form-control" id="designation">
-														<option selected value="">------Select------</option>
-														<option value="Floor Manager">01 Floor Manager</option>
-														<option value="Loom Worker">02 Loom Worker</option>
-													</select>
+											<div class="row">
+												<div class="col-md-12">
+													<span>Employee Name :</span>
 												</div>
 											</div>
-										</div>
-									</div>
+
+											<div class="row">
+												<div class="col-md-3">
+													<input type="text" class="form-control" name="empFirstName" 
+													<?php if ($row1 != null) : ?>
+														value="<?php echo $row1['First_Name'];?>"
+														<?php else : ?>
+															placeholder="First Name"
+														<?php endif ?>
+														>
+													</div>
+													<div class="col-md-3">
+														<input type="text" class="form-control" name="empMiddleName" 
+														<?php if ($row1 != null) : ?>
+															value="<?php echo $row1['Middle_Name'];?>"
+															<?php else : ?>
+																placeholder="Middle Name"
+															<?php endif ?>
+															>
+														</div>
+														<div class="col-md-3">
+															<input type="text" class="form-control" name="empLastName"
+															<?php if ($row1 != null) : ?>
+																value="<?php echo $row1['Last_Name'];?>"
+																<?php else : ?>
+																	placeholder="Last Name"
+																<?php endif ?>
+																>
+															</div>
+														</div>
+
+														<br>
+
+														<div class="row">
+
+															<div class="col-md-3">
+																<div class="row">
+																	<div class="col-md-12">
+																		<span>Date Of Birth :</span>
+																	</div>
+																</div>
+
+																<div class="row">
+																	<div class="col-md-12">
+																		<input type="date" class="form-control" name="dOB" value="<?php echo $row1['DOB'];?>">
+																	</div>
+																</div>
+															</div>
 
 
-									<div class="col-md-4">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Shift :</span>
-											</div>
-										</div>
+															<div class="col-md-6">
+																<div class="row">
+																	<div class="col-md-12">
+																		<span>Gender :</span>
+																	</div>
+																</div>
 
-										<div class="row">
-											<div class="col-md-12">
-												<div class="input-group mb-3">
-													<select class="custom-select form-control" id="shift">
-														<option selected value="">------Select------</option>
-														<option value="Day">01 Day</option>
-														<option value="Night">02 Night</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="input-group mb-3">
+																			<select class="custom-select form-control" name="gender">
+																				<?php if($row1 == null) : echo 'selected'; ?>
+																				<option selected value="">------Select------</option>
+																				<?php else : ?>
+																				<option value="">------Select------</option>
+																				<?php endif ?>
+																				
+																				<?php if($row1['Gender'] == 'male') : ?>
+																				<option selected value="male">Male</option>
+																				<?php else : ?>
+																				<option value="male">Male</option>
+																				<?php endif ?>
 
-									<div class="col-md-4">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Status :</span>
-											</div>
-										</div>
+																				<?php if($row1['Gender'] == 'female') : ?>
+																				<option selected value="female">Female</option>
+																				<?php else : ?>
+																				<option value="female">Female</option>
+																				<?php endif ?>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+															</div>
 
-										<div class="row">
-											<div class="col-md-12">
-												<div class="input-group mb-3">
-													<select class="custom-select form-control" id="jobStatus">
-														<option selected value="">------Select------</option>
-														<option value="Working">01 Working</option>
-														<option value="Not Working">02 Not Working</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
+														</div>
 
-								</div>
+														<br>
 
-								<br>
+														<div class="row">
+															<div class="col-md-12">
+																<span>Father's Name :</span>
+															</div>
+														</div>
 
-								<div class="row">
+														<div class="row">
+															<div class="col-md-4">
+																<input type="text" class="form-control" name="fatherName" 
+																<?php if ($row1 != null) : ?>
+																	value="<?php echo $row1['Father_name'];?>"
+																	<?php else : ?>
+																		placeholder="Father's Name"
+																	<?php endif ?>
+																	>
+																</div>
+															</div>
 
-									<div class="col-md-4">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Date Of Joining :</span>
-											</div>
-										</div>
+															<br>
 
-										<div class="row">
-											<div class="col-md-8">
-												<input type="date" class="form-control" name="dOJ">
-											</div>
-										</div>
-									</div>
+															<div class="row">
+																<div class="col-md-12">
+																	<span>Address :</span>
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="col-md-3">
+																	<input type="text" class="form-control" name="street" 
+																	<?php if ($row1 != null) : ?>
+																		value="<?php echo $row1['Street'];?>"
+																		<?php else : ?>
+																			placeholder="Street"
+																		<?php endif ?>
+																		>
+																	</div>
+																	<div class="col-md-3">
+																		<input type="text" class="form-control" name="city" 
+																		<?php if ($row1 != null) : ?>
+																			value="<?php echo $row1['City'];?>"
+																			<?php else : ?>
+																				placeholder="City"
+																			<?php endif ?>
+																			>
+																		</div>
+																		<div class="col-md-3">
+																			<input type="text" class="form-control" name="state"
+																			<?php if ($row1 != null) : ?>
+																				value="<?php echo $row1['State'];?>"
+																				<?php else : ?>
+																					placeholder="State"
+																				<?php endif ?>
+																				>
+																			</div>
+																			<div class="col-md-3">
+																				<input type="text" class="form-control" name="pin" 
+																				<?php if ($row1 != null) : ?>
+																					value="<?php echo $row1['Pin'];?>"
+																					<?php else : ?>
+																						placeholder="Pin Code"
+																					<?php endif ?>
+																					>
+																				</div>
+																			</div>
+
+																			<br>
+
+																			<div class="row">
+
+																				<div class="col-md-4">
+																					<div class="row">
+																						<div class="col-md-12">
+																							<span>Email Id :</span>
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-md-12">
+																							<input type="text" class="form-control" name="emailId" 
+																							<?php if ($row1 != null) : ?>
+																								value="<?php echo $row1['Email'];?>"
+																								<?php else : ?>
+																									placeholder="employeename@example.com"
+																								<?php endif ?>
+																								>
+																							</div>
+																						</div>
+																					</div>
 
 
-									<div class="col-md-6">
-										<div class="row">
-											<div class="col-md-12">
-												<span>Basic Pay :</span>
-											</div>
-										</div>
+																					<div class="col-md-6">
+																						<div class="row">
+																							<div class="col-md-6">
+																								<span>Mobile No. :</span>
+																							</div>
+																						</div>
 
-										<div class="row">
-											<div class="col-md-4">
-												<input type="text" class="form-control" name="basicPay">
-											</div>
-										</div>
-									</div>
+																						<div class="row">
+																							<div class="col-md-6">
+																								<input type="mobile" class="form-control" name="mobileHome" 
+																								<?php if ($row1 != null) : ?>
+																									value="<?php echo $row1['Mobile_Home'];?>"
+																									<?php else : ?>
+																										placeholder="Home"
+																									<?php endif ?>
+																									>
+																								</div>
+																								<div class="col-md-6">
+																									<input type="mobile" class="form-control" name="mobileWork" 
+																									<?php if ($row1 != null) : ?>
+																										value="<?php echo $row1['Mobile_Work'];?>"
+																										<?php else : ?>
+																											placeholder="Work"
+																										<?php endif ?>
+																										>
+																									</div>
+																								</div>
+																							</div>
 
-								</div>
-
-								<br>
-
-								<button type="submit" class="btn btn-info" name="addemp">Add Employee</button>
-							</form>
-						</div>
-
-					</div>
-
-				</div>
-
-				<!-- /. ROW  --> 
-			</div>
-			<!-- /. PAGE INNER  -->
-		</div>
-		<!-- /. PAGE WRAPPER  -->
-	</div>
-	<div class="footer">
+																						</div>
 
 
-		<div class="row">
-			<div class="col-lg-12" >
-				&copy;  2014 Weavix.com | Design by: <a href="http://binarytheme.com" style="color:#fff;" target="_blank">www.nathcorp.com</a>
-			</div>
-		</div>
-	</div>
 
 
-	<!-- /. WRAPPER  -->
-	<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-	<!-- JQUERY SCRIPTS -->
-	<script src="assets/js/jquery-1.10.2.js"></script>
-	<!-- BOOTSTRAP SCRIPTS -->
-	<script src="assets/js/bootstrap.min.js"></script>
-	<!-- CUSTOM SCRIPTS -->
-	<script src="assets/js/custom.js"></script>
+																						<hr>
+																						<h4>Job Details</h4>
+																						<hr align="left" class="custom-hr">
 
-<script type="text/javascript">
-	var getQueryString = function ( field, url ) {
-		var href = url ? url : window.location.href;
-		var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
-		var string = reg.exec(href);
-		return string ? string[1] : null;
-	};
+																						<div class="row">
 
-	var tab = getQueryString('tab');
+																							<div class="col-md-4">
+																								<div class="row">
+																									<div class="col-md-12">
+																										<span>Designation :</span>
+																									</div>
+																								</div>
 
-	if (tab == '2') {
-		document.getElementById("li1").classList.remove('active');
-		document.getElementById("emplist").classList.remove('active');
-		document.getElementById("li2").classList.add('active');
-		document.getElementById("addemp").classList.add('active');
-	}
-</script>
+																								<div class="row">
+																									<div class="col-md-12">
+																										<div class="input-group mb-3">
+																											<select class="custom-select form-control" name="designation">
+																												<?php if($row1 == null) : echo 'selected'; ?>
+																												<option selected value="">------Select------</option>
+																												<?php else : ?>
+																												<option value="">------Select------</option>
+																												<?php endif ?>
+																												<?php if($row1['Designation'] == 'Floor Manager') : echo 'selected'; ?>
+																												<option selected value="Floor Manager">01 Floor Manager</option>
+																												<?php else : ?>
+																												<option value="Floor Manager">01 Floor Manager</option>
+																												<?php endif ?>
+																												<?php if($row1['Designation'] == 'Loom Worker') : echo 'selected'; ?>
+																												<option selected value="Loom Worker">02 Loom Worker</option>
+																												<?php else : ?>
+																												<option value="Loom Worker">02 Loom Worker</option>
+																												<?php endif ?>
 
-</body>
-</html>
+																											</select>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+
+
+																							<div class="col-md-4">
+																								<div class="row">
+																									<div class="col-md-12">
+																										<span>Shift :</span>
+																									</div>
+																								</div>
+
+																								<div class="row">
+																									<div class="col-md-12">
+																										<div class="input-group mb-3">
+																											<select class="custom-select form-control" name="shift">
+																												
+																												<?php if($row1 == null) : echo 'selected'; ?>
+																													<option selected value="">------Select------</option>
+																													<?php else : ?>
+																													<option value="">------Select------</option>
+																												<?php endif ?>
+																												  
+																												<?php if($row1['Shift'] == 'Day') : echo 'selected'; ?>
+																												<option selected value="Day">01 Day</option>
+																												<?php else: ?>
+																												<option value="Day">01 Day</option>
+																												<?php endif ?>
+																												 
+																												<?php if($row1['Shift'] == 'Night') : echo 'selected'; ?>
+																												<option selected value="Night">02 Night</option>
+																												<?php else : ?>
+																												<option value="Night">02 Night</option>
+																												<?php endif ?>
+																												
+																											</select>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+
+																							<div class="col-md-4">
+																								<div class="row">
+																									<div class="col-md-12">
+																										<span>Status :</span>
+																									</div>
+																								</div>
+
+																								<div class="row">
+																									<div class="col-md-12">
+																										<div class="input-group mb-3">
+																											<select class="custom-select form-control" name="jobStatus">
+																												<option selected value="">------Select------</option>
+																												
+																												<?php if($row1['Status'] == 'Working') : echo 'selected'; ?>
+																												<option selected value="Working">01 Working</option>
+																												<?php else : ?>
+																												<option value="Working">01 Working</option>
+																												<?php endif ?>
+																												
+																												<?php if($row1['Status'] == 'Not Working') : echo 'selected'; ?>
+																												<option selected value="Not Working">02 Not Working</option>
+																												<?php else : ?>
+																												<option value="Not Working">02 Not Working</option>
+																												<?php endif ?>
+																												
+																											</select>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+
+																						</div>
+
+																						<br>
+
+																						<div class="row">
+
+																							<div class="col-md-4">
+																								<div class="row">
+																									<div class="col-md-12">
+																										<span>Date Of Joining :</span>
+																									</div>
+																								</div>
+
+																								<div class="row">
+																									<div class="col-md-8">
+																										<input type="date" class="form-control" value="<?php echo $row1['DOJ'];?>" name="dOJ">
+																									</div>
+																								</div>
+																							</div>
+
+
+																							<div class="col-md-6">
+																								<div class="row">
+																									<div class="col-md-12">
+																										<span>Basic Pay :</span>
+																									</div>
+																								</div>
+
+																								<div class="row">
+																									<div class="col-md-4">
+																										<input type="text" class="form-control" name="basicPay"
+																										<?php if ($row1 != null) : ?>
+																											value="<?php echo $row1['Basic_Pay'];?>"
+																										<?php endif ?>
+																										>
+																									</div>
+																								</div>
+																							</div>
+
+																						</div>
+
+																						<br>
+
+																						<button type="submit" class="btn btn-info" id="btnadd" name="addemp">Add Employee</button>
+																						<button type="submit" class="btn btn-info" id="btnedit" name="editemp">Update</button>
+																					</form>
+																				</div>
+
+																			</div>
+
+																		</div>
+
+																		<!-- /. ROW  --> 
+																	</div>
+																	<!-- /. PAGE INNER  -->
+																</div>
+																<!-- /. PAGE WRAPPER  -->
+															</div>
+															<div class="footer">
+
+
+																<div class="row">
+																	<div class="col-lg-12" >
+																		&copy;  2014 Weavix.com | Design by: <a href="http://binarytheme.com" style="color:#fff;" target="_blank">www.nathcorp.com</a>
+																	</div>
+																</div>
+															</div>
+
+
+															<!-- /. WRAPPER  -->
+															<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+															<!-- JQUERY SCRIPTS -->
+															<script src="assets/js/jquery-1.10.2.js"></script>
+															<!-- BOOTSTRAP SCRIPTS -->
+															<script src="assets/js/bootstrap.min.js"></script>
+															<!-- CUSTOM SCRIPTS -->
+															<script src="assets/js/custom.js"></script>
+
+															<script type="text/javascript">
+																var getQueryString = function ( field, url ) {
+																	var href = url ? url : window.location.href;
+																	var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+																	var string = reg.exec(href);
+																	return string ? string[1] : null;
+																};
+
+																var tab = getQueryString('tab');
+																var edit = getQueryString('edit');
+
+																if (tab == '2') {
+																	document.getElementById("li1").classList.remove('active');
+																	document.getElementById("emplist").classList.remove('active');
+																	document.getElementById("li2").classList.add('active');
+																	document.getElementById("addemp").classList.add('active');
+																}
+
+																if (edit != null) {
+																	document.getElementById('btnadd').style.visibility = 'hidden';
+																} else {
+																	document.getElementById('btnedit').style.visibility = 'hidden';
+																}
+															</script>
+
+														</body>
+														</html>

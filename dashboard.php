@@ -66,7 +66,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand" href="index.html">
 						<img src="assets/img/logo.png" style="height: 50px;" />
 
 					</a>
@@ -143,7 +143,7 @@
 
 					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 						<div class="div-square">
-							<a href="blank.html" >
+							<a href="usermanagement.php?tab=2" >
 								<i class="fa fa-user fa-5x"></i>
 								<h4>Register User</h4>
 							</a>
@@ -153,7 +153,7 @@
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 						<div class="div-square">
-							<a href="blank.html" >
+							<a href="production.php?tab=3" >
 								<i class="fa fa-gear fa-5x"></i>
 								<h4>Looms Status</h4>
 							</a>
@@ -163,7 +163,7 @@
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 						<div class="div-square">
-							<a href="blank.html" >
+							<a href="usermanagement.php" >
 								<i class="fa fa-users fa-5x"></i>
 								<h4>Employees</h4>
 							</a>

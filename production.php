@@ -34,7 +34,7 @@ include('server.php');
 	<!-- GOOGLE FONTS-->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-<style type="text/css">
+	<style type="text/css">
 	.error {
 		width: 100%; 
 		margin: 0px auto; 
@@ -62,7 +62,7 @@ include('server.php');
 
 
 
-	<div>
+	<div id="wrapper">
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="adjust-nav">
 				<div class="navbar-header">
@@ -71,7 +71,7 @@ include('server.php');
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand" href="index.html">
 						<img src="assets/img/logo.png" style="height: 50px;" />
 
 					</a>
@@ -112,6 +112,7 @@ include('server.php');
 					<ul class="nav nav-tabs">
 						<li class="active" id="li1"><a data-toggle="tab" href="#loomStart">Loom Start</a></li>
 						<li class="" id="li2"><a data-toggle="tab" href="#loomStop">Loom Stop</a></li>
+						<li class="" id="li3"><a data-toggle="tab" href="#loomActive">Loom Active</a></li>
 					</ul>
 
 					<div class="tab-content">
@@ -128,7 +129,15 @@ include('server.php');
 								<?php  if (count($errors) > 0) : ?>
 									<div class="error">
 										<?php foreach ($errors as $error) : ?>
-											<p><?php echo $error ?></p>
+											<strong><p><?php echo $error ?></p></strong>
+										<?php endforeach ?>
+									</div>
+								<?php  endif ?>
+
+								<?php  if (count($info) > 0) : ?>
+									<div class="info">
+										<?php foreach ($info as $i) : ?>
+											<strong><p><?php echo $i ?></p></strong>
 										<?php endforeach ?>
 									</div>
 								<?php  endif ?>
@@ -173,10 +182,7 @@ include('server.php');
 								<br>
 
 								<div class="row">
-									<div class="col-md-3" >
-										<span>Start Time :</span>
-									</div>
-
+									
 									<div class="col-md-3" >
 										<span>Start Reading :</span>
 									</div>
@@ -187,10 +193,7 @@ include('server.php');
 								</div>
 
 								<div class="row">
-									<div class="col-md-3 col-sm-12">
-										<input class="form-control" type="time" placeholder="" name="starttime" />
-									</div>
-
+									
 									<div class="col-md-3 col-sm-12">
 										<input class="form-control" type="number" placeholder="" name="startreading" />
 									</div>
@@ -217,22 +220,30 @@ include('server.php');
 									</div>
 								</div>
 
-</form>
+							</form>
 
-							</div>
+						</div>
 
 
-							<div id="loomStop" class="tab-pane fade in">
-								<h3>Loom Stop</h3>
-								<hr>
-								<form name="loomstopform" method="POST" action="production.php?tab=2" onsubmit="return loomstartformValidate()"> 
+						<div id="loomStop" class="tab-pane fade in">
+							<h3>Loom Stop</h3>
+							<hr>
+							<form name="loomstopform" method="POST" action="production.php?tab=2" onsubmit="return loomstartformValidate()"> 
 								<?php if(count($errors2) > 0) : ?>
 									<div class="error">
 										<?php foreach ($errors2 as $error) : ?>
-											<p><?php echo $error ?></p>
+											<strong><p><?php echo $error ?></p></strong>
 										<?php endforeach ?>
 									</div>
 								<?php endif ?>
+
+								<?php  if (count($info2) > 0) : ?>
+									<div class="info">
+										<?php foreach ($info2 as $i) : ?>
+											<strong><p><?php echo $i ?></p></strong>
+										<?php endforeach ?>
+									</div>
+								<?php  endif ?>
 
 								<div class="row">
 									<div class="col-md-3">
@@ -255,17 +266,13 @@ include('server.php');
 									<div class="col-md-3">
 										<span>Stop Reading :</span>
 									</div>
-									<div class="col-md-3">
-										<span>Stop Time :</span>
-									</div>
+									
 								</div>
 								<div class="row">
 									<div class="col-md-3">
 										<input type="number" name="stopread" class="form-control">
 									</div>
-									<div class="col-md-3">
-										<input type="time" name="stoptime" class="form-control">
-									</div>
+									
 								</div>
 
 								<br>
@@ -274,13 +281,39 @@ include('server.php');
 									<div class="col-md-3">
 										<button name="loomstopbtn" class="btn btn-info">Stop</button>
 									</div>
-									<div class="col-md-3">
-										<button class="btn btn-info">Reset</button>
-									</div>
 								</div>
 							</form>
 						</div>
 
+						<div id="loomActive" class="tab-pane fade in">
+							<h3>Active Looms</h3>
+							<hr>
+
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>Loom No.</th>
+										<th>Employee Id</th>
+										<th>Cloth Type</th>
+										<th>Start Reading</th>
+										<th>Start Time</th>
+										<th>Shift</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$getloomquery = "Select * from loom_status_temp;";
+
+									if ($results2 = mysqli_query($db, $getloomquery)) {
+										while ($row = mysqli_fetch_assoc($results2)) {
+											echo '<tr><td>'.$row['Loom_No'].'</td><td>'.$row['Emp_Id'].'</td><td>'.$row['Cloth_Type'].'</td><td>'.$row['Start_Reading'].'</td><td>'.$row['Start_Time'].'</td><td>'.$row['Shift'].'</td></tr>';
+										}
+									}
+									?>
+								</tbody>
+							</table>
+
+						</div>
 					</div>
 				</div>
 				
@@ -315,21 +348,28 @@ include('server.php');
 
 		}
 
-	var getQueryString = function ( field, url ) {
-		var href = url ? url : window.location.href;
-		var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
-		var string = reg.exec(href);
-		return string ? string[1] : null;
-	};
+		var getQueryString = function ( field, url ) {
+			var href = url ? url : window.location.href;
+			var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+			var string = reg.exec(href);
+			return string ? string[1] : null;
+		};
 
-	var tab = getQueryString('tab');
+		var tab = getQueryString('tab');
 
-	if (tab == '2') {
-		document.getElementById("li1").classList.remove('active');
-		document.getElementById("loomStart").classList.remove('active');
-		document.getElementById("li2").classList.add('active');
-		document.getElementById("loomStop").classList.add('active');
-	}
+		if (tab == '2') {
+			document.getElementById("li1").classList.remove('active');
+			document.getElementById("loomStart").classList.remove('active');
+			document.getElementById("li2").classList.add('active');
+			document.getElementById("loomStop").classList.add('active');
+		}
+
+		if (tab == '3') {
+			document.getElementById("li1").classList.remove('active');
+			document.getElementById("loomStart").classList.remove('active');
+			document.getElementById("li3").classList.add('active');
+			document.getElementById("loomActive").classList.add('active');
+		}
 
 
 	</script>

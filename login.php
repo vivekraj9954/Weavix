@@ -1,4 +1,15 @@
+<?php 
+session_start();
+
+if (isset($_SESSION['username'])) {
+	header('location: dashboard.php');
+}
+
+?>
+
 <?php include('server.php') ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
