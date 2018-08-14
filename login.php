@@ -5,109 +5,78 @@ if (isset($_SESSION['username'])) {
 	header('location: dashboard.php');
 }
 
+
 ?>
 
 <?php include('server.php') ?>
 
-
-
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<title>Admin Login</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
-	<!--===============================================================================================-->
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="css/login_util.css">
-	<link rel="stylesheet" type="text/css" href="css/login_main.css">
-	<!--===============================================================================================-->
-
-	<style type="text/css">
-	.error {
-		width: 100%; 
-		margin: 0px auto; 
-		padding: 10px; 
-		border: 1px solid #a94442; 
-		color: #a94442; 
-		background: #f2dede; 
-		border-radius: 5px; 
-		text-align: left;
-	}
-	.info {
-		width: 100%; 
-		margin: 0px auto; 
-		padding: 10px; 
-		border: 1px solid #58a841; 
-		color: #58a841; 
-		background: #def1de; 
-		border-radius: 5px; 
-		text-align: left;
-	}
-</style>
+	<title>Weavix Login</title>		
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<link rel="icon" type="image/png" href="images/log.png" />
 
 </head>
 
 <body>
 	
-	<div class="limiter">
-		<div class="container-login100" style="background-image:url(images/bgg.png);">
+	<div class>
+		<div class="login1" style="background-image:url(images/bg.png);">
 			
-			<div class="wrap-login100" style="background-image:url(images/sub.png);
-			box-shadow:0 0 15px 15px rgba(0,0,0, 0.6); ">
-			
-			<img src="images/ad.png" style="margin-left:10px">
-			
-			<form class="login100-form validate-form" method="POST" action="login.php"  >
-				<span class="login100-form-title">
-					<!--<img src="images/ad.png"> -->
-				</span>
+			<!--<div class="wrap-login100" style="background-color:#326985;">-->
+				<div class="login2" style="background-image:url(images/sub.jpg);">
 
-				<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<input class="input100" type="text" name="adminId" placeholder="  Admin Id">
-					<span class="focus-input100"></span>
-					<span class="symbol-input100">
-						<img src="images/admin.png" style="height:30px; width:30px;">
-					</span>
-				</div>
+					<img src="images/ad.png" style="margin-bottom:10px">
 
-				<div class="wrap-input100 validate-input" data-validate = "Password is required">
-					<input class="input100" type="password" name="pass" placeholder="  Admin Password">
-					<span class="focus-input100"></span>
-					<span class="symbol-input100">
-						<img src="images/pass.png" style="height:30px; width:30px;">
-					</span>
-				</div>
-				
-				<div class="container-login100-form-btn">
-					<button class="login100-form-btn" type="submit" name="btn_login">
-						Login
-					</button>
-				</div>
-				<?php  if (count($errors) > 0) : ?>
-					<div class="error">
-						<?php foreach ($errors as $error) : ?>
-							<p><?php echo $error ?></p>
-						<?php endforeach ?>
-					</div>
-				<?php  endif ?>
 
-				<div class="text-center p-t-12">
-					<span class="txt1">
-						Forgot
-					</span>
-					<a class="txt2" href="#">
-						Username / Password?
-					</a>
+					<form  method="POST" action="login.php"  >
+
+						<div class="w-inputB">	
+
+							<input class="inputB" type="text" name="adminId" placeholder="  Admin Id">			
+							<span class="s-inputB">
+								<img src="images/admin.png" style="height:30px; width:30px;">
+							</span>	
+
+						</div>
+
+
+						<div class="w-inputB">	
+
+							<input class="inputB" type="password" name="pass" placeholder="  Admin Password">		
+							<span class="s-inputB">
+								<img src="images/pass.png" style="height:30px; width:30px;">
+							</span>
+
+						</div>
+
+						<div>
+							<button class="button" type="submit" name="btn_login">
+								LOGIN
+							</button>
+						</div>
+
+					</form>
+
+
 				</div>
-				
-			</form>
+			</div>
 		</div>
-	</div>
-</div>
 
-</body>
-</html>
+		<script type="text/javascript">
+			var getQueryString = function ( field, url ) {
+				var href = url ? url : window.location.href;
+				var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+				var string = reg.exec(href);
+				return string ? string[1] : null;
+			};
+
+			var error = getQueryString('error');
+
+			if (error == '1') {
+				window.alert("Wrong username or password.");
+			}
+		</script>
+
+	</body>
+	</html>

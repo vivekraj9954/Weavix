@@ -1,16 +1,16 @@
 ﻿<?php 
-	session_start(); 
+session_start(); 
 
-	if (!isset($_SESSION['username'])) {
-		$_SESSION['msg'] = "You must log in first";
-		header('location: login.php');
-	}
+if (!isset($_SESSION['username'])) {
+	$_SESSION['msg'] = "You must log in first";
+	header('location: login.php');
+}
 
-	if (isset($_GET['logout'])) {
-		session_destroy();
-		unset($_SESSION['username']);
-		header("location: login.php");
-	}
+if (isset($_GET['logout'])) {
+	session_destroy();
+	unset($_SESSION['username']);
+	header("location: login.php");
+}
 
 ?>
 
@@ -106,7 +106,290 @@
 		<div id="page-wrapper" >
 			<div id="page-inner">
 				
-				<!-- /. ROW  --> 
+				<div style="padding: 20px;">
+					<ul class="nav nav-tabs">
+						<li class="active" id="li1"><a data-toggle="tab" href="#productionreport">Production Report</a></li>
+						<li id="li2"><a data-toggle="tab" href="#clothreport">Cloth Report</a></li>
+						<li id="li3"><a data-toggle="tab" href="#Employeereport">Employee Report</a></li>
+					</ul>
+
+					<div class="tab-content">
+
+
+						<div id="productionreport" class="tab-pane fade in active">	
+							<form name="Productionreportform" method="POST" action="reports.php">
+
+
+								<h3>Production Report</h3>		
+								<hr>
+								<div class="container">
+									<div class="row">
+										<form class="form-horizontal" action="reports.php" method="POST">
+
+
+											<div class="row">
+												<div class="col-md-1">
+													<label>Loom_No</label>
+												</div>
+												<div class="col-lg-4">
+													<select name="loomnumber" class="form-control">
+														<option>-------Select------</option>
+														<option value="1">1</option>
+														<option value="2">2</option>
+														<option value="3">3</option>
+														<option value="4">4</option>
+														<option value="5">5</option>
+														<option value="6">6</option>
+														<option value="7">7</option>
+														<option value="8">8</option>
+														<option value="9">9</option>
+														<option value="10">10</option>
+													</select>
+												</div>
+												<div class="col-md-3">
+													<button name="submit" class="btn btn-primary">Submit</button>
+												</div>
+											</div>						 
+
+
+											<br>
+										</form>
+									</div>
+								</div>
+								<div class="row">
+									<table class="table table-striped table-hover">
+										<thead>
+											<tr>
+												<th>Loom_No</th>
+												<th>Cotton</th>
+												<th>Nylon</th>
+												<th>Silk</th>
+												<th>Production_Total</th>
+												<th>Day</th>
+												<th>Night</th>
+												<th>Marking</th>
+											</tr>
+										</thead>						
+										<tbody>
+											<?php 
+											/* include("db.php"); */
+											if(isset($_POST['submit'])){
+
+												$Loom_No = $_POST['loomnumber']; 
+												if($Loom_No !=""){
+													$query =  "SELECT * from production_loom WHERE Loom_No='$Loom_No';";
+
+													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+													$data = mysqli_query($conn1, $query) or die('error');
+													if(mysqli_num_rows($data) > 0){
+														while($row = mysqli_fetch_assoc($data)){
+															$Loom_No = $row['Loom_No'];
+															$Cloth_A = $row['Cotton'];
+															$Cloth_B= $row['Nylon'];
+															$Cloth_C = $row['Silk'];
+															$Production_Total = $row['Production_Total'];
+															$Day= $row['Day'];
+															$Night= $row['Night'];
+															$Marking = $row['Marking'];
+
+
+															echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$Day.'</td><td>'.$Night.'</td><td>'.$Marking.'</td></tr>';
+
+
+														}
+													}
+
+												} 
+											} else {
+												
+												#show all
+
+													$query =  "SELECT * from production_loom;";
+
+													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+													$data = mysqli_query($conn1, $query) or die('error');
+													if(mysqli_num_rows($data) > 0){
+														while($row = mysqli_fetch_assoc($data)){
+															$Loom_No = $row['Loom_No'];
+															$Cloth_A = $row['Cotton'];
+															$Cloth_B= $row['Nylon'];
+															$Cloth_C = $row['Silk'];
+															$Production_Total = $row['Production_Total'];
+															$Day= $row['Day'];
+															$Night= $row['Night'];
+															$Marking = $row['Marking'];
+
+
+															echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$Day.'</td><td>'.$Night.'</td><td>'.$Marking.'</td></tr>';
+														}
+												} 
+											}
+											?>
+										</tbody>
+									</table>
+
+								</div>
+							</form>
+						</div>
+
+
+						<div id="clothreport" class="tab-pane fade in ">
+
+							<h3> Cloth Report</h3>
+							<hr>
+
+							<div class="container">
+								<div class="row">
+									<form class="form-horizontal" method="POST" action="reports.php?tab=2">
+
+
+										<div class="row">
+											<div class="col-md-1">
+												<label>Cloth_Type</label>
+											</div>
+											<div class="col-lg-4">
+												<select name="clothtype" class="form-control">
+													<option Selected value="">-----Select-----</option>
+													<option value="Cotton">Cotton</option>
+													<option value="Nylon">Nylon</option>
+													<option value="Silk">Silk</option>
+												</select>
+											</div>
+											<div class="col-md-2">
+												<button name="submit1" class="btn btn-primary">Submit</button> 
+											</div>
+										</div>						 
+
+									</form>
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Cloth_Type</th>
+											<th>Production_Total</th>
+										</tr>
+									</thead>						
+									<tbody>
+										<?php 
+
+										if (isset($_POST['submit1'])) {
+											$clothtype = $_POST['clothtype'];
+
+											$getClothProdDetails = 'SELECT SUM('.$clothtype.') as Totalcloth, SUM(Production_Total) as TotalProd from production_loom';
+
+											$db = mysqli_connect("localhost", "root", "", "weavix");
+
+											$TotalclothResults = mysqli_query($db, $getClothProdDetails);
+
+											
+											$rowcloth = mysqli_fetch_assoc($TotalclothResults);
+
+											echo '<tr><td>'.$rowcloth['Totalcloth'].'</td><td>'.$rowcloth['TotalProd'].'</td></tr>';
+
+											
+										}
+										?>
+									</tbody>
+								</table>
+							</div>
+						</div> 
+
+						<div id="Employeereport" class="tab-pane fade in ">
+
+							<h3> Employee Report</h3>
+							<hr>
+							<div class="container">
+								<div class="row">
+									<form class="form-horizontal" action="reports.php?tab=3" method="POST">
+
+
+										<div class="row">
+											<div class="col-md-1">
+												<label>Emp_Id</label>
+											</div>
+											<div class="col-lg-4">
+												<input type="number" class="form-control" name="empid" placeholder="Emp_Id">
+											</div>
+											<div class="col-md-2">
+												<button name="submit2" class="btn btn-primary">Submit</button>	
+											</div>
+										</div>						 
+
+
+										<br>
+
+
+									</form>
+								</div>
+
+								<div class="row">
+									<table class="table table-striped table-hover">
+										<thead>
+											<tr>
+												<th>Emp_Id</th>
+												<th>Cotton</th>
+												<th>Nylon</th>
+												<th>Silk</th>
+												<th>Production_Total</th>
+												<th>Day Shift</th>
+												<th>Night Shift</th>
+											</tr>
+										</thead>						
+										<tbody>
+											<?php 
+											/* include("db.php"); */
+											if(isset($_POST['submit2'])){
+
+												$Emp_Id= $_POST['empid']; 
+
+													$query =  "SELECT * from employee_wise_prod  WHERE Employee_Id='$Emp_Id';";
+
+													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+													$data = mysqli_query($conn1, $query) or die('error');
+													$row = mysqli_fetch_assoc($data);
+													$Cloth_A = $row['Cotton'];
+													$Cloth_B= $row['Nylon'];
+													$Cloth_C = $row['Silk'];
+													$Production_Total = $row['Total_Production'];
+													$dayShift= $row['Day_Shift'];
+													$nightShift= $row['Night_Shift'];
+
+
+
+													echo '<tr><td>'.$Emp_Id.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$dayShift.'</td><td>'.$nightShift.'</td></tr>';
+												
+											} else {
+												$query =  "SELECT * from employee_wise_prod;";
+
+													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+													$data = mysqli_query($conn1, $query) or die('error');
+													while($row = mysqli_fetch_assoc($data)){
+													$employeeid = $row['Employee_Id'];	
+													$Cloth_A = $row['Cotton'];
+													$Cloth_B= $row['Nylon'];
+													$Cloth_C = $row['Silk'];
+													$Production_Total = $row['Total_Production'];
+													$dayShift= $row['Day_Shift'];
+													$nightShift= $row['Night_Shift'];
+
+
+
+													echo '<tr><td>'.$employeeid.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$dayShift.'</td><td>'.$nightShift.'</td></tr>';
+											}
+										}
+											?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- /. ROW  --> 
+					</div>
+					<!-- /. PAGE INNER  -->
+				</div> 
 				
 			</div>
 			<!-- /. PAGE INNER  -->
@@ -132,6 +415,35 @@
 	<script src="assets/js/bootstrap.min.js"></script>
 	<!-- CUSTOM SCRIPTS -->
 	<script src="assets/js/custom.js"></script>
+
+	<script type="text/javascript">
+		
+
+		var getQueryString = function ( field, url ) {
+			var href = url ? url : window.location.href;
+			var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+			var string = reg.exec(href);
+			return string ? string[1] : null;
+		};
+
+		var tab = getQueryString('tab');
+
+		if (tab == '2') {
+			document.getElementById("li1").classList.remove('active');
+			document.getElementById("productionreport").classList.remove('active');
+			document.getElementById("li2").classList.add('active');
+			document.getElementById("clothreport").classList.add('active');
+		}
+
+		if (tab == '3') {
+			document.getElementById("li1").classList.remove('active');
+			document.getElementById("productionreport").classList.remove('active');
+			document.getElementById("li3").classList.add('active');
+			document.getElementById("Employeereport").classList.add('active');
+		}
+
+
+	</script>
 
 
 </body>

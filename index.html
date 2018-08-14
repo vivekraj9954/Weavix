@@ -1,201 +1,142 @@
-<!DOCTYPE html>
+<html>
 
-<html lang="en" >
-<head>
-	<meta charset="UTF-8">
-	<title>Weavix</title><link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+  <head>
+	  <title>Weavix</title>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <link rel="stylesheet" type="text/css" href="css/style.css">
+	  <link rel="icon" type="image/png" href="images/log.png" />
+  </head>
 
-	<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/skel.min.js"></script>
 
-	<script src="js/init.js"></script>
 
-	<link rel="stylesheet" href="css/myown.css" />
 
-	<noscript>
-		<link rel="stylesheet" href="css/skel.css" />			
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/style-xlarge.css" />
-	</noscript>
+<body style="background-color:#97C1BA">
 
-	<style type="text/css">
-	.error {
-		width: 100%; 
-		margin: 0px auto; 
-		padding: 10px; 
-		border: 1px solid #a94442; 
-		color: #a94442; 
-		background: #f2dede; 
-		border-radius: 5px; 
-		text-align: left;
-	}
-	.info {
-		width: 100%; 
-		margin: 0px auto; 
-		padding: 10px; 
-		border: 1px solid #58a841; 
-		color: #58a841; 
-		background: #def1de; 
-		border-radius: 5px; 
-		text-align: left;
-	}
-</style>
+<!-- first banner -->
+	<div class="jumbotron text-center div0" style="background-image: url(images/bg.png);">
+		  
+		<img class ="response1" src="images/logo.png">
+		  
+		<p>" Our life is like a single strand of thread weaving </br>its way through the fabric of existence providing color and integrity to the whole."</p>
 
-</head>
+		<a href="#" class="button" style="margin-top: 180px;" >USER</a>
+		<a href="login.php" class="button">ADMIN</a>
+			
+	</div>
+	  
 
-<body class="landing">
-
-	<!-- Banner -->
-	<section id="banner" >
-		<img src="images/logo.png" alt="" style="width:450px; height:155px;"/>
-		<p style="text-shadow: 0 0 4px #aaa; color:#e2e2e2; ">" Our life is like a single strand of thread weaving </br>its way through the fabric of existence providing color and integrity to the whole."</p>
-
-		<ul class="actions" style="margin-top:100px">
-			<li>
-				<a href="#" class="button big" style="margin-right:10px" >USER</a>
-			</li>
-			<li>
-				<a href="login.php" class="button big">ADMIN</a>
-			</li>
-		</ul>
-
-	</section>
-
-	<!-- One -->
-	<section id="one" class="wrapper style1 special" style="background-image:url(images/sub.png);">
-		<div class="container">
-			<header class="major">
-				<h2>OUR PRODUCTS</h2>
-				<p>Producing a sequence of world class products for you.</p>
-			</header>
-
-			<div class="row 150%" >
-
-				<div class="4u 12u$(medium)">
-
-					<section class="box" style="background-image:url(images/a-cotton.jpg); ">
-						<img src="images/cotton.png"/>
-						<h3 style="color:#ffffff; margin-top:75px ">TYPE A</h3>
-						<div style="background-color:#0000004d">
-							<p class="divText">Cotton adds simplicity to our lives , accept it and help it to spread its message globally thereby making it a global product.</p>
-						</div>
-					</div>
-
-					<div class="4u 12u$(medium)">
-
-						<section class="box" style="background-image:url(images/a-nylon.jpg);">
-							<img src="images/nylon.png"/>
-							<h3 style="color:#ffffff; margin-top:75px">TYPE B</h3>
-							<div style="background-color:#0000004d">
-								<p class="divText">Nylon spreads the message of flexibility so accept it along with its message and step towards a joyous life.</p>
-							</div>
-						</div>
+<!-- second banner -->
+	<div class="container div1">
+		  <div class="row div1">
+			  	
+				<h2 class="text3">OUR PRODUCTS</h2>
+				<p class="text4">Producing a sequence of world class products for you.</p>
+				
+				<div class="col-sm-4">
+					<div class="div2 divB" style="background-image:url(images/a-cotton.jpg)">
+						<img class="response1" src="images/cotton.png">
 						
-						<div class="4u$ 12u$(medium)">
-							
-							<section class="box" style="background-image:url(images/a-silk.jpg);">
-								<img src="images/silk.png"/>
-								<h3 style="color:#ffffff; margin-top:75px">TYPE C</h3>
-								<div style="background-color:#0000004d">
-									<p class="divText">Silk reminds us of our culture so take a small step towards the  cultural heritage by accepting silk and its elegance.</p>
-								</div>
-							</div>
-
+						<h3 class="text1">TYPE A</h3>
+						<div class="text2">
+								<p style="background-color:#000000a1;">Cotton adds simplicity to our lives , accept it and help it to spread its message globally thereby making it a global product.</p>
 						</div>
 					</div>
-				</section>
+				</div>
+				
+				<div class="col-sm-4">
+					<div class="div2 divB" style="background-image:url(images/a-nylon.jpg)">
+					  	<img class="response1" src="images/nylon.png">
+					  	
+					  	<h3 class="text1">TYPE B</h3>
+						<div class="text2">
+								<p style="background-color:#000000a1;">Nylon spreads the message of flexibility so accept it along with its message and step towards a joyous life.</p>
+						</div>
+					</div>  
+				</div>
 
-
-				<!-- Footer -->
-				<footer id="footer" style="background-image:url(images/foot.jpg);">
-					<div class="container">
-
-						<section class="links">
-							<div class="row">
-
-
-								<section class="3u 6u(medium) 12u$(small)" style="background-color:#0000001c; height:280px">
-									<h3 style="margin-top:15px" >ABOUT COMPANY</h3>
-									<ul class="unstyled">
-										<li><a href="#">Use of World Class Machinery.</a></li>
-										<li><a href="#">Soothing and Peaceful Enviroment.</a></li>
-										<li><a href="#">Various benefits for employees.</a></li>
-										<li><a href="#">Deals with other corporate sectors.</a></li>
-										<li><a href="#">Use of technically updated methods.</a></li>
-									</ul>
-								</section>
-
-
-								<section class="3u 6u$(medium) 12u$(small)" style="margin-right:0px; background-color:#0000001a; height:280px">
-									<h3 style="margin-top:15px">CONTACT INFO</h3>
-									<ul class="unstyled">
-										<li>Weavix, Street No.-12</li>
-										<li>Ashok Nagar, Ranchi, India.</li>
-										<li></li>
-										<li>India:-<a href="#">  Info.India@Weavix.com </a></li>
-										<li>Spain:-<a href="#"> Info.Spain@Weavix.com </a></li>
-										<li>Italy:-<a href="#">   Info.Italy@Weavix.com </a></li>
-									</ul>
-								</section>
-
-
-								<section class="3u 6u(medium) 12u$(small)" style="background-color:#0000001a; height:280px">
-									<h3 style="margin-top:15px">SOLUTIONS</h3>
-									<ul class="unstyled" style="list-style-type:disc">
-										<li><a href="#">Ground Looms for producing cotton.</a></li>
-										<li><a href="#">Back Strap Looms for silk threads.</a></li>
-										<li><a href="#">Frame Looms for nylon threads.</a></li>
-										<li><a href="#">Rigid heddle Looms for producing silk.</a></li>
-										<li><a href="#">Hand Looms for producing nylon.</a></li>
-									</ul>
-								</section>
-
-
-								<section class="3u$ 6u$(medium) 12u$(small)" style="background-color:#0000001a; height:280px">
-									<h3 style="margin-top:15px">REMOTE LOCATIONS</h3>
-									<ul class="unstyled">
-										<li>East Cazorla, Block No.:43K, Street No.72-C, Spain.</li>
-										<li>Contact No. : <a href="#">00-34-93445634 </a></li>
-										<li></li>
-										<li>Basque City, Block: 41B, Street No.85A, Italy.</li>
-										<li>Contact No. : <a href="#">00-34-65846215</a></li>
-									</ul>
-								</section>
-
-							</div>
-						</section>
-
-						<div class="row">
-
-							<div class="8u 12u$(medium)">
-								<ul class="copyright">
-									<li>&copy; Weavix. All rights reserved.</li>
-									<li> <a href="#">Our Leaders</a></li>
-									<li> <a href="#">Privacy Policy</a></li>
-								</ul>
-							</div>
-
-							<div class="4u$ 12u$(medium)">
-								<ul class="icons">
-									<li>
-										<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
-									</li>
-									<li>
-										<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
-									</li>
-									<li>
-										<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
-									</li>
-									<li>
-										<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
-									</li>
-								</ul>
-							</div>
-
+				<div class="col-sm-4">	
+					<div class="div2 divB" style="background-image:url(images/a-silk.jpg)">
+					  	<img class="response1" src="images/silk.png">
+					  	
+					  	<h3 class="text1">TYPE C</h3>
+						<div class="text2">
+								<p style="background-color:#000000a1;">Silk reminds us of our culture so take a small step towards the  cultural heritage by accepting silk and its elegance.</p>
 						</div>
 					</div>
-				</footer>
+				</div> 
+		  
+		  </div>
+	</div>
 
-			</body>
-			</html>
+	<!-- third banner -->
+	<footer class="div3">
+	<div class="container">
+		  
+		  <div class="row">
+				
+				<div class="col-sm-3">					
+					<h3 class="div4">ABOUT COMPANY</h3>
+					<div class="div5-1">
+						<h5 class="divD">Use of World Class Machinery.</br></h5>
+						<h5 class="divD">Soothing and Peaceful Enviroment.</br></h5>
+						<h5 class="divD">Various benefits for employees.</br></h4>
+						<h5 class="divD">Deals with other corporate sectors.</br></h5>
+						<h5 class="divD">Use of technically updated methods.</br></h5>
+					</div>
+				</div>
+				
+				<div class="col-sm-3" >
+					<h3 class="div4">CONTACT INFO</h3>
+						<div class="div5-2">
+							<h5>Weavix, Street No.-12</br>Ashok Nagar, Ranchi, India.</h5>
+							</br>
+							<h5>India:-<a href="#">  Info.India@Weavix.com </a></h5>
+							<h5>Spain:-<a href="#"> Info.Spain@Weavix.com </a></h5>
+							<h5>Italy:-<a href="#">   Info.Italy@Weavix.com </a></h5>	  	
+						</div>
+				</div>  
+
+				<div class="col-sm-3" >
+					<h3 class="div4">SOLUTIONS</h3>
+					<div class="div5-1">
+							<h5 class="divD" >Ground Looms for producing cotton.</h5>
+							<h5 class="divD" >Back Strap Looms for silk threads.</h5>
+							<h5 class="divD" >Frame Looms for nylon threads.</h5>
+							<h5 class="divD" >Rigid heddle Looms for producing silk.</h5>
+							<h5 class="divD" >Hand Looms for producing nylon.</h5>
+					</div>				  	
+				</div> 
+				
+				<div class="col-sm-3" >
+					<h3 class="div4">REMOTE LOCATIONS</h3>
+					<div class="div5-2">
+							<h5>East Cazorla,</br> Block No.:43K, Street No.72-C, Spain.</br>
+								Contact No. : <a href="#">00-34-93445634 </a></h5>
+							</br>
+							<h5>Basque City, </br> Block: 41B, Street No.85A, Italy.</br>
+								Contact No. : <a href="#">00-34-65846215</a></h5>
+					</div>				  	
+				</div> 
+		  
+		  </div>
+	</div>
+	
+	<div class="foot">
+			<div>
+				<h4 class="foot1">Weavix &copy; 2018  | <a href="#">Our Leaders</a>  |  <a href="#">Privacy Policy</a></h4>
+			</div>
+			<div>
+				<span>
+					<a href="#"><img class="imgR" src="images/f1.png"></a>
+					<a href="#"><img class="imgR" src="images/f2.png"></a>
+					<a href="#"><img class="imgR" src="images/f3.png"></a>
+					<a href="#"><img class="imgR" src="images/f4.png"></a>						
+					<a href="#"><img class="imgR" src="images/f5.png"></a>
+				</span>
+			</div>
+	</div>
+</footer>
+
+</body>
+
+</html>

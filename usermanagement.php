@@ -100,11 +100,22 @@ if (isset($_GET['edit'])) {
 			firstname.focus();
 			return false;
 		}
+		if(!(/^[/^[a-zA-Z]+$/.test(addempform.empFirstName.value)))
+			{
+				window.alert("You have entered an invalid first name!");
+				return false;
+			}
+
 		if (lastname.value == "") {
 			window.alert("Please enter last name.");
 			lastname.focus();
 			return false;
 		}
+		if(!(/^[/^[a-zA-Z]+$/.test(addempform.empLastName.value)))
+			{
+				window.alert("You have entered an invalid last name!");
+				return false;
+			}
 		if (dob.value == "") {
 			window.alert("Please enter date of birth.");
 			dob.focus();
@@ -120,37 +131,77 @@ if (isset($_GET['edit'])) {
 			fathername.focus();
 			return false;
 		}
+		if(!(/^[/^[a-zA-Z]+$/.test(addempform.fatherName.value)))
+			{
+				window.alert("You have entered an invalid father's name!");
+				return false;
+			}
 		if (street.value == "") {
 			window.alert("Please enter street.");
 			street.focus();
 			return false;
 		}
+
 		if (city.value == "") {
 			window.alert("Please enter city.");
 			city.focus();
 			return false;
 		}
+		if(!(/^[/^[a-zA-Z]+$/.test(addempform.city.value)))
+			{
+				window.alert("You have entered an invalid city!");
+				return false;
+			}
 		if (state.value == "") {
 			window.alert("Please enter state.");
 			state.focus();
 			return false;
 		}
+		if(!(/^[/^[a-zA-Z]+$/.test(addempform.state.value)))
+			{
+				window.alert("You have entered an invalid state!");
+				return false;
+			}
 		if (pin.value == "") {
 			window.alert("Please enter pin.");
 			pin.focus();
 			return false;
 		}
+		if(!(/^\d{6}$/.test(addempform.pin.value)))
+			{
+				window.alert("You have entered an invalid pin!");
+				return false;
+			}
+
+
 		if (email.value == "") {
 			window.alert("Please enter email id.");
 			email.focus();
 			return false;
 		}
 
+		if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(addempform.emailId.value)))
+		{
+			window.alert("You have entered an invalid email address!");
+			return false;
+		} 
+
 		if (mobilehome.value == "" && mobilework.value == "") {
 			window.alert("Please enter atleast one mobile number.");
 			mobilehome.focus();
 			return false;
 		}
+		if(!(/^\d{10}$/.test(addempform.mobileHome.value)))
+			{
+				window.alert("You have entered an invalid mobileHome!");
+				return false;
+			}
+			if(!(/^\d{10}$/.test(addempform.mobileWork.value)))
+			{
+				window.alert("You have entered an invalid mobileWork!");
+				return false;
+			}
+
 		if (designation.value == "") {
 			window.alert("Please select designation.");
 			designation.focus();
@@ -176,6 +227,16 @@ if (isset($_GET['edit'])) {
 			basicpay.focus();
 			return false;
 		}
+		if(!(/^\d{1,6}(?:\.\d{0,2})?$/.test(addempform.basicPay.value)))
+			{
+				window.alert("You have entered an invalid basicpay");
+				return false;
+			}
+
+
+
+
+		
 
 	}
 

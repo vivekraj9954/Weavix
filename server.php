@@ -122,6 +122,7 @@ if (isset($_POST['btn_login'])) {
 		header('location: dashboard.php');
 	}else {
 		array_push($errors, "Wrong username/password combination");
+		header('location: login.php?error=1');
 	}
 }
 
@@ -143,11 +144,17 @@ if (isset($_POST['startloombtn'])) {
 	# check if the loom is already occupied
 
 	$checkIfLoomExists = "SELECT * FROM loom_status_temp WHERE Loom_No='$loomno'";
+	$checkIfEmpExists = "SELECT * FROM loom_status_temp WHERE Emp_Id='$empno'";
 
 	$result = mysqli_query($db, $checkIfLoomExists);
+	$result2 = mysqli_query($db, $checkIfEmpExists);
 
 	if(mysqli_num_rows($result) == 1){
-		array_push($errors, "Loom is already occupied.");
+		$row = mysqli_fetch_assoc($result);
+		array_push($errors, 'Loom is already occupied by an employee with Employee ID : '.$row['Emp_Id']);
+	} else if (mysqli_num_rows($result2) == 1) {
+		$row = mysqli_fetch_assoc($result2);
+		array_push($errors, 'Employee is already working on Loom No. : '.$row['Loom_No']);
 	} else {
 
 		$loomstartquery = "call spLoomStart('$loomno', '$empno', '$clothtype', '$startreading', '$shift');";
@@ -174,10 +181,6 @@ if (isset($_POST['loomstopbtn'])) {
 
 	$checkIfLoomDoesNotExists = "SELECT * FROM loom_status_temp WHERE Loom_No='$loomtostop'";
 
-
-
-	$deleteLoomFromLoomTempTable = "DELETE FROM loom_status_temp WHERE Loom_No = '$loomtostop'";
-
 	$result = mysqli_query($db, $checkIfLoomDoesNotExists);
 
 	if (mysqli_num_rows($result) == 1) {
@@ -190,18 +193,137 @@ if (isset($_POST['loomstopbtn'])) {
 			array_push($errors2, "There was a technical issue. Unable to update the stop record.");
 		}
 
+	#get data from temp table
+	################################
+	$gettempdata = "SELECT * FROM loom_status_temp WHERE Loom_No='$loomtostop';";
+
+	$r1 = mysqli_query($db, $gettempdata);
+
+	$rowtempdata = mysqli_fetch_assoc($r1);
+
+	$empid = $rowtempdata['Emp_Id'];
+	$startread = $rowtempdata['Start_Reading'];
+	$stopread = $rowtempdata['Stop_Reading'];
+	$clothtype = $rowtempdata['Cloth_Type'];
+	$shift = $rowtempdata['Shift'];
+
+	$readdiff = $stopread - $startread;
+
+	#update employee_wise_prod
+	######################################
+
+	$getempdata = "SELECT * FROM employee_wise_prod WHERE Employee_Id='$empid';";
+
+	$r2 = mysqli_query($db, $getempdata);
+
+	$rowemp = mysqli_fetch_assoc($r2);
+
+	$newcottonprod = $rowemp['Cotton']+$readdiff;
+	$newnylonprod = $rowemp['Nylon']+$readdiff;
+	$newsilkprod = $rowemp['Silk']+$readdiff;
+	$newtotalprod = $rowemp['Total_Production']+$readdiff;
+	$newdayprod = $rowemp['Day_Shift']+$readdiff;
+	$newnightprod = $rowemp['Night_Shift']+$readdiff;
+
+	$updateEmpProdQuery = "";
+
+	if ($clothtype == 'Cotton') {
 		
+		if ($shift == 'Day') {
+			
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Cotton='$newcottonprod',Total_Production='$newtotalprod',Day_Shift='$newdayprod' WHERE Employee_Id='$empid';";
+
+		} elseif ($shift == 'Night') {
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Cotton='$newcottonprod',Total_Production='$newtotalprod',Night_Shift='$newnightprod' WHERE Employee_Id='$empid';";
+		}
+
+	} elseif ($clothtype == 'Nylon') {
+		
+		if ($shift == 'Day') {
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Nylon='$newnylonprod',Total_Production='$newtotalprod',Day_Shift='$newdayprod' WHERE Employee_Id='$empid';";
+		} elseif ($shift == 'Night') {
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Nylon='$newnylonprod',Total_Production='$newtotalprod',Night_Shift='$newnightprod' WHERE Employee_Id='$empid';";
+		}
+
+	} elseif ($clothtype == 'Silk') {
+		
+		if ($shift == 'Day') {
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Silk='$newsilkprod',Total_Production='$newtotalprod',Day_Shift='$newdayprod' WHERE Employee_Id='$empid';";
+		} elseif ($shift == 'Night') {
+			$updateEmpProdQuery = "UPDATE employee_wise_prod SET Silk='$newsilkprod',Total_Production='$newtotalprod',Night_Shift='$newnightprod' WHERE Employee_Id='$empid';";
+		}
+
+	}
+
+	$r3 = mysqli_query($db,$updateEmpProdQuery);
+
+	
+
+	#update production_loom
+	######################################
+
+	$getloomdata = "SELECT * FROM production_loom WHERE Loom_No='$loomtostop';";
+
+	$r4 = mysqli_query($db, $getloomdata);
+
+	$rowloom = mysqli_fetch_assoc($r4);
+
+	$newcottonprod = $rowloom['Cotton']+$readdiff;
+	$newnylonprod = $rowloom['Nylon']+$readdiff;
+	$newsilkprod = $rowloom['Silk']+$readdiff;
+	$newtotalprod = $rowloom['Production_Total']+$readdiff;
+	$newdayprod = $rowloom['Day']+$readdiff;
+	$newnightprod = $rowloom['Night']+$readdiff;
+	$marking = $_POST['stopread'];
+
+	$updateLoomProdQuery = "";
+
+	if ($clothtype == 'Cotton') {
+		
+		if ($shift == 'Day') {
+			
+			$updateLoomProdQuery = "UPDATE production_loom SET Cotton='$newcottonprod',Production_Total='$newtotalprod',Day='$newdayprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+
+		} elseif ($shift == 'Night') {
+			$updateLoomProdQuery = "UPDATE production_loom SET Cotton='$newcottonprod',Production_Total='$newtotalprod',Night='$newnightprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+		}
+
+	} elseif ($clothtype == 'Nylon') {
+		
+		if ($shift == 'Day') {
+			$updateLoomProdQuery = "UPDATE production_loom SET Nylon='$newnylonprod',Production_Total='$newtotalprod',Day='$newdayprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+		} elseif ($shift == 'Night') {
+			$updateLoomProdQuery = "UPDATE production_loom SET Nylon='$newnylonprod',Production_Total='$newtotalprod',Night='$newnightprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+		}
+
+	} elseif ($clothtype == 'Silk') {
+		
+		if ($shift == 'Day') {
+			$updateLoomProdQuery = "UPDATE production_loom SET Silk='$newsilkprod',Production_Total='$newtotalprod',Day='$newdayprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+		} elseif ($shift == 'Night') {
+			$updateLoomProdQuery = "UPDATE production_loom SET Silk='$newsilkprod',Production_Total='$newtotalprod',Night='$newnightprod', Marking='$marking' WHERE Loom_No='$loomtostop';";
+		}
+
+	}
+
+	$r5 = mysqli_query($db,$updateLoomProdQuery);
+
+	if ($r5) {
+		array_push($info2, "Data Commited. ");
+	} else {
+		array_push($errors2, "Sorry there was a technical issue.");
+	}
+
+	#delete loom status form loom_status_temp table
+	###################################################################
+
+	$deletequery = "DELETE from loom_status_temp where Loom_No='$loomtostop'";
+
+	mysqli_query($db, $deletequery);
+
 	} else {
 		array_push($errors2, "The loom is already vacant");
 	}
 
 }
-
-
-
-
-
-
-
-
 ?>

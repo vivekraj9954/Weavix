@@ -130,9 +130,9 @@
 
 				<!-- /. ROW-2 Icons  --> 
 				<div class="row text-center pad-top">
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 						<div class="div-square">
-							<a href="blank.html" >
+							<a href="production.php" >
 								<i class="fa fa-circle-o-notch fa-5x"></i>
 								<h4>Production</h4>
 							</a>
@@ -141,7 +141,7 @@
 
 					</div> 
 
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 						<div class="div-square">
 							<a href="usermanagement.php?tab=2" >
 								<i class="fa fa-user fa-5x"></i>
@@ -151,7 +151,7 @@
 
 
 					</div>
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 						<div class="div-square">
 							<a href="production.php?tab=3" >
 								<i class="fa fa-gear fa-5x"></i>
@@ -161,7 +161,7 @@
 
 
 					</div>
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 						<div class="div-square">
 							<a href="usermanagement.php" >
 								<i class="fa fa-users fa-5x"></i>
@@ -171,19 +171,9 @@
 
 
 					</div>
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 						<div class="div-square">
-							<a href="blank.html" >
-								<i class="fa fa-key fa-5x"></i>
-								<h4>Admins</h4>
-							</a>
-						</div>
-
-
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-						<div class="div-square">
-							<a href="blank.html" >
+							<a href="reports.php" >
 								<i class="fa fa-clipboard fa-5x"></i>
 								<h4>Reports</h4>
 							</a>

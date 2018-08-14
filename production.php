@@ -57,6 +57,45 @@ include('server.php');
 	}
 </style>
 
+<script type="text/javascript">
+
+	function addProdFormValidation() {
+		var loomno = document.forms["addprodform"]["loomno"];
+		var empno = document.forms["addprodform"]["empno"];
+		var clothtype = document.forms["addprodform"]["clothtype"];
+		var startreading = document.forms["addprodform"]["startreading"];
+		var shift = document.forms["addprodform"]["shift"];
+
+		if (loomno.value == "") {
+			window.alert("Please enter loomno.");
+			loomno.focus();
+			return false;
+		}
+		if (empno.value == "") {
+			window.alert("Please enter empno.");
+			empno.focus();
+			return false;
+		}
+		if (clothtype.value == "") {
+			window.alert("Please select clothtype.");
+			clothtype.focus();
+			return false;
+		}
+		if (startreading.value == "") {
+			window.alert("Please enter startreading.");
+			startreading.focus();
+			return false;
+		}
+		if (shift.value == "") {
+			window.alert("Please select shift.");
+			shift.focus();
+			return false;
+		}
+	}
+
+
+</script>
+
 </head>
 <body>
 
@@ -159,121 +198,170 @@ include('server.php');
 								<div class="row">
 									<div class="col-md-3 col-sm-12">
 										<div class="input-group mb-3">
-											<input class="form-control" type="number" name="loomno" placeholder="">
+											<?php if(isset($_GET['loom'])) : ?>
+												<input class="form-control" type="number" id="loomno" name="loomno" onchange="updatestartread()" value="<?php echo $_GET['loom'] ?>">
+												<?php else :?>	
+													<input class="form-control" type="number" id="loomno" name="loomno" onchange="updatestartread()" placeholder="">
+												<?php endif?>
+											</div>
+										</div>
+
+										<div class="col-md-3 col-sm-12">
+											<input class="form-control" placeholder="" name="empno" />
+										</div>
+
+										<div class="col-md-3 col-sm-12">
+											<div class="input-group mb-3">
+												<select class="custom-select form-control" name="clothtype">
+													<option selected value="">----Select----</option>
+													<option value="Cotton">Cotton</option>
+													<option value="Nylon">Nylon</option>
+													<option value="Silk">Silk</option>
+												</select>
+											</div>
+										</div>	
+									</div>
+
+									<br>
+
+									<div class="row">
+
+										<div class="col-md-3" >
+											<span>Start Reading :</span>
+										</div>
+
+										<div class="col-md-3" >
+											<span>Shift :</span>
 										</div>
 									</div>
 
-									<div class="col-md-3 col-sm-12">
-										<input class="form-control" placeholder="" name="empno" />
-									</div>
+									<div class="row">
 
-									<div class="col-md-3 col-sm-12">
-										<div class="input-group mb-3">
-											<select class="custom-select form-control" name="clothtype">
-												<option selected value="">----Select----</option>
-												<option value="Cotton">Cotton</option>
-												<option value="Nylon">Nylon</option>
-												<option value="Silk">Silk</option>
-											</select>
+										<div class="col-md-3 col-sm-12">
+											<?php 
+											if (isset($_GET['loom'])) {
+												$loomno = $_GET['loom'];
+												$query = "select Marking from production_loom where Loom_No='$loomno';";
+
+												$data = mysqli_query($db, $query);
+
+												$row = mysqli_fetch_assoc($data);
+
+												echo '<input class="form-control" type="number" name="startreading" value="'.$row['Marking'].'">';
+											} else {
+												echo '<input class="form-control" type="number" name="startreading" disabled placeholder="Select Loom First">';
+											}
+											?>
 										</div>
-									</div>	
-								</div>
 
-								<br>
-
-								<div class="row">
-									
-									<div class="col-md-3" >
-										<span>Start Reading :</span>
+										<div class="col-md-3 col-sm-12">
+											<div class="input-group mb-3">
+												<select class="custom-select form-control" name="shift">
+													<option selected value="">----Select----</option>
+													<option value="Day">Day</option>
+													<option value="Night">Night</option>
+												</select>
+											</div>
+										</div>	
 									</div>
 
-									<div class="col-md-3" >
-										<span>Shift :</span>
-									</div>
-								</div>
+									<br>
 
-								<div class="row">
-									
-									<div class="col-md-3 col-sm-12">
-										<input class="form-control" type="number" placeholder="" name="startreading" />
-									</div>
-
-									<div class="col-md-3 col-sm-12">
-										<div class="input-group mb-3">
-											<select class="custom-select form-control" name="shift">
-												<option selected value="">----Select----</option>
-												<option value="Day">Day</option>
-												<option value="Night">Night</option>
-											</select>
+									<div class="row">
+										<div class="col-md-3">
+											<button class="btn btn-info" name="startloombtn">Start</button>
 										</div>
-									</div>	
-								</div>
-
-								<br>
-
-								<div class="row">
-									<div class="col-md-3">
-										<button class="btn btn-info" name="startloombtn">Start</button>
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-info" name="resetbtn">Reset</button>
-									</div>
-								</div>
-
-							</form>
-
-						</div>
-
-
-						<div id="loomStop" class="tab-pane fade in">
-							<h3>Loom Stop</h3>
-							<hr>
-							<form name="loomstopform" method="POST" action="production.php?tab=2" onsubmit="return loomstartformValidate()"> 
-								<?php if(count($errors2) > 0) : ?>
-									<div class="error">
-										<?php foreach ($errors2 as $error) : ?>
-											<strong><p><?php echo $error ?></p></strong>
-										<?php endforeach ?>
-									</div>
-								<?php endif ?>
-
-								<?php  if (count($info2) > 0) : ?>
-									<div class="info">
-										<?php foreach ($info2 as $i) : ?>
-											<strong><p><?php echo $i ?></p></strong>
-										<?php endforeach ?>
-									</div>
-								<?php  endif ?>
-
-								<div class="row">
-									<div class="col-md-3">
-										<span>Loom No. :</span>
-									</div>
-									
-								</div>
-								<div class="row">
-									<div class="col-md-3">
-										<div class="input-group mb-3">
-											<input type="number" class="form-control" name="loomnostop" placeholder="Loom to stop">
+										<div class="col-md-3">
+											<button class="btn btn-info" name="resetbtn">Reset</button>
 										</div>
 									</div>
-									
-								</div>
 
-								<br>
+								</form>
 
-								<div class="row">
-									<div class="col-md-3">
-										<span>Stop Reading :</span>
+							</div>
+
+
+							<div id="loomStop" class="tab-pane fade in">
+								<h3>Loom Stop</h3>
+								<hr>
+								<form name="loomstopform" method="POST" action="production.php?tab=2" onsubmit="return loomstartformValidate()"> 
+									<?php if(count($errors2) > 0) : ?>
+										<div class="error">
+											<?php foreach ($errors2 as $error) : ?>
+												<strong><p><?php echo $error ?></p></strong>
+											<?php endforeach ?>
+										</div>
+									<?php endif ?>
+
+									<?php  if (count($info2) > 0) : ?>
+										<div class="info">
+											<?php foreach ($info2 as $i) : ?>
+												<strong><p><?php echo $i ?></p></strong>
+											<?php endforeach ?>
+										</div>
+									<?php  endif ?>
+
+									<div class="row">
+										<div class="col-md-3">
+											<span>Loom No. :</span>
+										</div>
+										<div class="col-md-3">
+											<span>Stop Reading :</span>
+										</div>
+
 									</div>
-									
-								</div>
-								<div class="row">
-									<div class="col-md-3">
-										<input type="number" name="stopread" class="form-control">
+									<div class="row">
+										<div class="col-md-3">
+											<?php if(isset($_GET['loomcheck'])) : ?>
+												<input type="number" min="0" max="10" class="form-control" name="loomnostop" id="loomnostop" onchange="showloominfo()" value="<?php echo $_GET['loomcheck']; ?>">
+												<?php else : ?>
+												<input type="number" min="0" max="10" class="form-control" name="loomnostop" id="loomnostop" onchange="showloominfo()" placeholder="Loom to stop">
+											<?php endif ?>
+										</div>
+										<div class="col-md-3">
+											<input type="number" name="stopread" class="form-control">
+										</div>
+
 									</div>
-									
-								</div>
+
+									<br>
+
+									<div class="row">
+										<?php 
+										if (isset($_GET['loomcheck'])) {
+											$loomstop = $_GET['loomcheck'];
+											$query = "select * from loom_status_temp where Loom_No='$loomstop';";
+											$result = mysqli_query($db,$query);
+											if (mysqli_num_rows($result) > 0) {
+												echo '<div class="col-md-3" style="text-align: right;">';
+												echo 'Employee No.  :<br>';
+												echo 'Cloth Type.  :<br>';
+												echo 'Start Reading  :<br>';
+												echo 'Start Time  :<br>';
+												echo 'Shift  :<br>';
+												echo '</div>';
+												echo '<div class="col-md-9">';
+
+												$row = mysqli_fetch_assoc($result);
+
+												echo $row['Emp_Id'].'<br>';
+												echo $row['Cloth_Type'].'<br>';
+												echo $row['Start_Reading'].'<br>';
+												echo $row['Start_Time'].'<br>';
+												echo $row['Shift'].'<br>';
+												echo '</div>';
+											} else {
+												echo '<div class="error">';
+											
+												echo '<strong><p>Loom is not active. No Data to show</p></strong>';
+											
+												echo '</div>';
+											}
+										}
+										?>
+
+									</div>
+								
 
 								<br>
 
@@ -346,6 +434,16 @@ include('server.php');
 	<script type="text/javascript">
 		function loomstartformValidate(){
 
+		}
+
+		function updatestartread(){
+			var loomno = document.getElementById("loomno").value;
+			window.location = "production.php?loom="+loomno;
+		}
+
+		function showloominfo(){
+			var loomno = document.getElementById("loomnostop").value;
+			window.location = "production.php?tab=2&loomcheck="+loomno;
 		}
 
 		var getQueryString = function ( field, url ) {
