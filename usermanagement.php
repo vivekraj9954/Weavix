@@ -131,11 +131,11 @@ if (isset($_GET['edit'])) {
 			fathername.focus();
 			return false;
 		}
-		if(!(/^[/^[a-zA-Z]+$/.test(addempform.fatherName.value)))
-			{
-				window.alert("You have entered an invalid father's name!");
-				return false;
-			}
+		// if(!(/^[/[^a-zA-Z]+$/.test(addempform.fatherName.value)))
+		// 	{
+		// 		window.alert("You have entered an invalid father's name!");
+		// 		return false;
+		// 	}
 		if (street.value == "") {
 			window.alert("Please enter street.");
 			street.focus();
