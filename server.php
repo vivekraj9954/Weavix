@@ -139,7 +139,6 @@ if (isset($_POST['startloombtn'])) {
 	$empno = $_POST['empno'];
 	$clothtype = $_POST['clothtype'];
 	$startreading = $_POST['startreading'];
-	$shift = $_POST['shift'];
 
 	# check if the loom is already occupied
 
@@ -157,7 +156,7 @@ if (isset($_POST['startloombtn'])) {
 		array_push($errors, 'Employee is already working on Loom No. : '.$row['Loom_No']);
 	} else {
 
-		$loomstartquery = "call spLoomStart('$loomno', '$empno', '$clothtype', '$startreading', '$shift');";
+		$loomstartquery = "call spLoomStart('$loomno', '$empno', '$clothtype', '$startreading');";
 
 		$resultinsert = mysqli_query($db, $loomstartquery);
 		if ($resultinsert) {

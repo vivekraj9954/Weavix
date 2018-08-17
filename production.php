@@ -190,9 +190,6 @@ include('server.php');
 										<span>Employee No. :</span>
 									</div>
 
-									<div class="col-md-3" >
-										<span>Cloth Type :</span>
-									</div>
 								</div>
 
 								<div class="row">
@@ -210,16 +207,7 @@ include('server.php');
 											<input class="form-control" placeholder="" name="empno" />
 										</div>
 
-										<div class="col-md-3 col-sm-12">
-											<div class="input-group mb-3">
-												<select class="custom-select form-control" name="clothtype">
-													<option selected value="">----Select----</option>
-													<option value="Cotton">Cotton</option>
-													<option value="Nylon">Nylon</option>
-													<option value="Silk">Silk</option>
-												</select>
-											</div>
-										</div>	
+										
 									</div>
 
 									<br>
@@ -231,7 +219,7 @@ include('server.php');
 										</div>
 
 										<div class="col-md-3" >
-											<span>Shift :</span>
+											<span>Cloth Type :</span>
 										</div>
 									</div>
 
@@ -256,10 +244,11 @@ include('server.php');
 
 										<div class="col-md-3 col-sm-12">
 											<div class="input-group mb-3">
-												<select class="custom-select form-control" name="shift">
+												<select class="custom-select form-control" name="clothtype">
 													<option selected value="">----Select----</option>
-													<option value="Day">Day</option>
-													<option value="Night">Night</option>
+													<option value="Cotton">Cotton</option>
+													<option value="Nylon">Nylon</option>
+													<option value="Silk">Silk</option>
 												</select>
 											</div>
 										</div>	

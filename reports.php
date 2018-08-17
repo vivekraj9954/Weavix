@@ -152,12 +152,12 @@ if (isset($_GET['logout'])) {
 											</div>						 
 
 
-											<br>
+											<hr>
 										</form>
 									</div>
 								</div>
 								<div class="row">
-									<table class="table table-striped table-hover">
+									<table class="table table-striped table-hover" style="width: 100%">
 										<thead>
 											<tr>
 												<th>Loom_No</th>
@@ -201,33 +201,32 @@ if (isset($_GET['logout'])) {
 
 												} 
 											} else {
-												
+
 												#show all
 
-													$query =  "SELECT * from production_loom;";
+												$query =  "SELECT * from production_loom;";
 
-													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
-													$data = mysqli_query($conn1, $query) or die('error');
-													if(mysqli_num_rows($data) > 0){
-														while($row = mysqli_fetch_assoc($data)){
-															$Loom_No = $row['Loom_No'];
-															$Cloth_A = $row['Cotton'];
-															$Cloth_B= $row['Nylon'];
-															$Cloth_C = $row['Silk'];
-															$Production_Total = $row['Production_Total'];
-															$Day= $row['Day'];
-															$Night= $row['Night'];
-															$Marking = $row['Marking'];
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												if(mysqli_num_rows($data) > 0){
+													while($row = mysqli_fetch_assoc($data)){
+														$Loom_No = $row['Loom_No'];
+														$Cloth_A = $row['Cotton'];
+														$Cloth_B= $row['Nylon'];
+														$Cloth_C = $row['Silk'];
+														$Production_Total = $row['Production_Total'];
+														$Day= $row['Day'];
+														$Night= $row['Night'];
+														$Marking = $row['Marking'];
 
 
-															echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$Day.'</td><td>'.$Night.'</td><td>'.$Marking.'</td></tr>';
-														}
+														echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$Day.'</td><td>'.$Night.'</td><td>'.$Marking.'</td></tr>';
+													}
 												} 
 											}
 											?>
 										</tbody>
 									</table>
-
 								</div>
 							</form>
 						</div>
@@ -235,66 +234,135 @@ if (isset($_GET['logout'])) {
 
 						<div id="clothreport" class="tab-pane fade in ">
 
-							<h3> Cloth Report</h3>
-							<hr>
+							
 
-							<div class="container">
+							<form class="form-horizontal" method="POST" action="reports.php?tab=2">
+								<h3> Cloth Report</h3>
+								<hr>
+								
 								<div class="row">
-									<form class="form-horizontal" method="POST" action="reports.php?tab=2">
+									<div class="col-md-1">
+										<label>Cloth_Type</label>
+									</div>
+									<div class="col-lg-4">
+										<select name="clothtype" class="form-control">
+											<option Selected value="">-----Select-----</option>
+											<option value="Cotton">Cotton</option>
+											<option value="Nylon">Nylon</option>
+											<option value="Silk">Silk</option>
+										</select>
+									</div>
+									<div class="col-md-2">
+										<button name="submit1" class="btn btn-primary">Submit</button> 
+									</div>
+								</div>						 
 
-
-										<div class="row">
-											<div class="col-md-1">
-												<label>Cloth_Type</label>
-											</div>
-											<div class="col-lg-4">
-												<select name="clothtype" class="form-control">
-													<option Selected value="">-----Select-----</option>
-													<option value="Cotton">Cotton</option>
-													<option value="Nylon">Nylon</option>
-													<option value="Silk">Silk</option>
-												</select>
-											</div>
-											<div class="col-md-2">
-												<button name="submit1" class="btn btn-primary">Submit</button> 
-											</div>
-										</div>						 
-
-									</form>
-								</div>
-							</div>
-							<br>
-							<div class="row">
+								
+								<hr>
 								<table class="table table-striped table-hover">
 									<thead>
 										<tr>
-											<th>Cloth_Type</th>
-											<th>Production_Total</th>
+											<?php
+											if(isset($_POST['submit1'])){
+
+												$clothtype = $_POST['clothtype']; 
+												if($clothtype =="Cotton"){
+													echo '<th>Loom_No</th>';
+													echo '<th>Cotton</th>';
+													echo '<th>Production_Total</th>';
+												} 
+												else if ($clothtype == "Nylon") {
+													echo '<th>Loom_No</th>';
+													echo '<th>Nylon</th>';
+													echo '<th>Production_Total</th>';
+												} else {
+													echo '<th>Loom_No</th>';
+													echo '<th>Silk</th>';
+													echo '<th>Production_Total</th>';
+												}
+											} 
+											?>
 										</tr>
 									</thead>						
 									<tbody>
 										<?php 
+										/* include("db.php"); */
+										if(isset($_POST['submit1'])){
 
-										if (isset($_POST['submit1'])) {
-											$clothtype = $_POST['clothtype'];
+											$clothtype = $_POST['clothtype']; 
+											if($clothtype =="Cotton"){
+												$query =  "SELECT * from production_loom;";
 
-											$getClothProdDetails = 'SELECT SUM('.$clothtype.') as Totalcloth, SUM(Production_Total) as TotalProd from production_loom';
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												if(mysqli_num_rows($data) > 0){
+													while($row = mysqli_fetch_assoc($data)){
+														$Loom_No = $row['Loom_No'];
+														$Cloth = $row['Cotton'];
+														$Production_Total = $row['Production_Total'];
 
-											$db = mysqli_connect("localhost", "root", "", "weavix");
 
-											$TotalclothResults = mysqli_query($db, $getClothProdDetails);
+														echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth.'</td><td>'.$Production_Total.'</td><td>';
+													}
+													$gettotalquery = 'select sum(Cotton) as totalcloth, sum(Production_Total) as totalproduction from production_loom;';
 
-											
-											$rowcloth = mysqli_fetch_assoc($TotalclothResults);
+													$data2 = mysqli_query($conn1, $gettotalquery);
+													$row2 = mysqli_fetch_assoc($data2);
+													echo '<tr><td><strong>Total -></strong></td><td><strong>'.$row2['totalcloth'].'</strong></td><td><strong>'.$row2['totalproduction'].'</strong></td><td>';
+												}
 
-											echo '<tr><td>'.$rowcloth['Totalcloth'].'</td><td>'.$rowcloth['TotalProd'].'</td></tr>';
+											} 
+											else if ($clothtype == "Nylon") {
+												$query =  "SELECT * from production_loom;";
 
-											
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												if(mysqli_num_rows($data) > 0){
+													while($row = mysqli_fetch_assoc($data)){
+														$Loom_No = $row['Loom_No'];
+														$Cloth = $row['Nylon'];
+														$Production_Total = $row['Production_Total'];
+
+
+														echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth.'</td><td>'.$Production_Total.'</td><td>';
+													}
+													$gettotalquery = 'select sum(Nylon) as totalcloth, sum(Production_Total) as totalproduction from production_loom;';
+
+													$data2 = mysqli_query($conn1, $gettotalquery);
+													$row2 = mysqli_fetch_assoc($data2);
+													echo '<tr><td><strong>Total -></strong></td><td><strong>'.$row2['totalcloth'].'</strong></td><td><strong>'.$row2['totalproduction'].'</strong></td><td>';
+												}
+											} else {
+												
+												#show all
+
+												$query =  "SELECT * from production_loom;";
+
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												if(mysqli_num_rows($data) > 0){
+													while($row = mysqli_fetch_assoc($data)){
+														$Loom_No = $row['Loom_No'];
+														$Cloth = $row['Silk'];
+														$Production_Total = $row['Production_Total'];
+
+
+														echo '<tr><td>'.$Loom_No.'</td><td>'.$Cloth.'</td><td>'.$Production_Total.'</td><td>';
+													}
+													$gettotalquery = 'select sum(Silk) as totalcloth, sum(Production_Total) as totalproduction from production_loom;';
+
+													$data2 = mysqli_query($conn1, $gettotalquery);
+													$row2 = mysqli_fetch_assoc($data2);
+													echo '<tr><td><strong>Total -></strong></td><td><strong>'.$row2['totalcloth'].'</strong></td><td><strong>'.$row2['totalproduction'].'</strong></td><td>';
+												} 
+											}
 										}
 										?>
 									</tbody>
 								</table>
-							</div>
+
+
+							</form>
 						</div> 
 
 						<div id="Employeereport" class="tab-pane fade in ">
@@ -319,7 +387,7 @@ if (isset($_GET['logout'])) {
 										</div>						 
 
 
-										<br>
+										<hr>
 
 
 									</form>
@@ -345,28 +413,28 @@ if (isset($_GET['logout'])) {
 
 												$Emp_Id= $_POST['empid']; 
 
-													$query =  "SELECT * from employee_wise_prod  WHERE Employee_Id='$Emp_Id';";
+												$query =  "SELECT * from employee_wise_prod  WHERE Employee_Id='$Emp_Id';";
 
-													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
-													$data = mysqli_query($conn1, $query) or die('error');
-													$row = mysqli_fetch_assoc($data);
-													$Cloth_A = $row['Cotton'];
-													$Cloth_B= $row['Nylon'];
-													$Cloth_C = $row['Silk'];
-													$Production_Total = $row['Total_Production'];
-													$dayShift= $row['Day_Shift'];
-													$nightShift= $row['Night_Shift'];
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												$row = mysqli_fetch_assoc($data);
+												$Cloth_A = $row['Cotton'];
+												$Cloth_B= $row['Nylon'];
+												$Cloth_C = $row['Silk'];
+												$Production_Total = $row['Total_Production'];
+												$dayShift= $row['Day_Shift'];
+												$nightShift= $row['Night_Shift'];
 
 
 
-													echo '<tr><td>'.$Emp_Id.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$dayShift.'</td><td>'.$nightShift.'</td></tr>';
+												echo '<tr><td>'.$Emp_Id.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$dayShift.'</td><td>'.$nightShift.'</td></tr>';
 												
 											} else {
 												$query =  "SELECT * from employee_wise_prod;";
 
-													$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
-													$data = mysqli_query($conn1, $query) or die('error');
-													while($row = mysqli_fetch_assoc($data)){
+												$conn1 = mysqli_connect('localhost', 'root', '', 'weavix');
+												$data = mysqli_query($conn1, $query) or die('error');
+												while($row = mysqli_fetch_assoc($data)){
 													$employeeid = $row['Employee_Id'];	
 													$Cloth_A = $row['Cotton'];
 													$Cloth_B= $row['Nylon'];
@@ -378,8 +446,9 @@ if (isset($_GET['logout'])) {
 
 
 													echo '<tr><td>'.$employeeid.'</td><td>'.$Cloth_A.'</td><td>'.$Cloth_B.'</td><td>'.$Cloth_C.'</td><td>'.$Production_Total.'</td><td>'.$dayShift.'</td><td>'.$nightShift.'</td></tr>';
+												}
+
 											}
-										}
 											?>
 										</tbody>
 									</table>
